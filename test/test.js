@@ -114,4 +114,47 @@ describe('default', function() {
             ).eql('a%%%e1###mn###mv.js');
         });
     });
+
+    describe('lib/schemes/flex', function() {
+        it('should return path for a block', function() {
+            expect(scheme('flex').path({ block: 'a' }, 'js'))
+                .eql('a/a.js');
+        });
+
+        it('should return path for a block with modifier', function() {
+            expect(
+                scheme('flex').path({
+                    block: 'a', modName: 'mn', modVal: 'mv'
+                }, 'js')
+            ).eql('a/a_mn_mv.js');
+        });
+
+        it('should return path for elem', function() {
+            expect(
+                scheme('flex').path({ block: 'a', elem: 'e1' }, 'js')
+            ).eql('a/a__e1.js');
+        });
+
+        it('should return path for modName elem', function() {
+            expect(
+                scheme('flex').path({
+                    block: 'a',
+                    elem: 'e1',
+                    modName: 'mn',
+                    modVal: 'mv'
+                }, 'js')
+            ).eql('a/a__e1_mn_mv.js');
+        });
+
+        it('should support optional naming style', function() {
+            expect(
+                scheme('flex').path({
+                    block: 'a',
+                    elem: 'e1',
+                    modName: 'mn',
+                    modVal: 'mv'
+                }, 'js', { naming: { elem: '%%%', mod: '###' }})
+            ).eql('a/%%%e1/###mn/a%%%e1###mn###mv.js');
+        });
+    });
 });
